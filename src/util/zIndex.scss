@@ -1,0 +1,30 @@
+////
+/// @group z-index
+////
+
+/// z-index map
+///
+/// manage z-index
+$z-index: (
+  front: 9999,
+  drawer: 1000,
+  hamburger: 900,
+  selectbox: 800,
+  header: 800,
+  footer: 700,
+  follow: 600,
+  middle: 500,
+  hover: 400,
+  masktext: 300,
+  mask: 200,
+  tag: 100,
+  top: 1,
+  base: 0,
+  back: -1
+) !default;
+
+/// @param {$z-index key} $name ['base'] choice key from $z-index map.
+/// @return {$z-index val} return $z-index val.
+@function z($name: 'base') {
+  @return map-get($z-index, $name);
+}

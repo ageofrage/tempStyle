@@ -1,0 +1,91 @@
+@use './utils' as *;
+
+////
+/// @group layout
+////
+
+/// mobile-device's side padding.
+$sp-side: 12px !default;
+
+/// add padding to both-side in mobile
+/// @require {mixin} break
+/// @param {*} $side [$sp-side] - both-side padding
+/// @param {$content-width key} $break [md] - breakpoint
+@mixin spPadding($side: $sp-side, $break: md) {
+  padding-right: $side;
+  padding-left: $side;
+
+  @include break($break) {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+/// set max-width on the breakpoint and centered
+/// @require {mixin} break
+/// @param {$content-width key} $break [md] - breakpoint
+/// @param {$content-width key} $max [width(pc)]  - content max-width on the breakpoint
+@mixin content($max: width(pc), $break: md) {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+
+  @include break($break) {
+    max-width: $max;
+  }
+}
+
+/// make grid layout-system.
+///
+/// this base on 50 fr.
+///
+/// both side 1fr area-names are blank.
+///
+/// this has [main, side?, aside?, left?, right?] area-names.
+/// @param {int[]} $fr [(48fr)]  - you can set between 1 to 3 columns.
+/// @param {*} $min-side [$sp-side] - side padding
+@mixin grid(
+  $fr: (
+    48fr
+  ),
+  $min-side: $sp-side
+) {
+  $_length: length($fr);
+  $_totalFr: 50fr;
+  display: grid;
+
+  @if $_length == 1 {
+    $_content: nth($fr, 1);
+    @if $_content > $_totalFr {
+      @error 'over 50fr';
+    }
+
+    $_side: ($_totalFr - $_content) / 2;
+    grid-template: '. main .' / minmax($min-side, $_side) $_content minmax($min-side, $_side);
+  } @else if $_length == 2 {
+    $_content: nth($fr, 1) + nth($fr, 2);
+    @if $_content > $_totalFr {
+      @error 'over 50fr';
+    }
+    $_side: ($_totalFr - $_content) / 2;
+
+    @if nth($fr, 1) < nth($fr, 2) {
+      grid-template: '. aside main .' / minmax($min-side, $_side) nth($fr, 1) nth($fr, 2) minmax($min-side, $_side);
+    } @else {
+      grid-template: '. main aside .' / minmax($min-side, $_side) nth($fr, 1) nth($fr, 2) minmax($min-side, $_side);
+    }
+  } @else if $_length == 3 {
+    $_content: nth($fr, 1) + nth($fr, 2) + nth($fr, 3);
+    @if $_content > $_totalFr {
+      @error 'over 48 fr';
+    }
+    $_side: ($_totalFr - $_content) / 2;
+
+    grid-template: '. left main right .' / minmax($min-side, $_side) nth($fr, 1) nth($fr, 2) nth($fr, 3) minmax(
+        $min-side,
+        $_side
+      );
+  } @else {
+    @error 'you cannot set columns below 1 or over 3';
+  }
+}

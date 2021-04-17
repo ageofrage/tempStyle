@@ -1,0 +1,78 @@
+@use './utils.scss' as *;
+////
+/// @group font
+////
+
+/// font-family map.
+/// to manage font-family as map, you can convert it to css-vars easily.
+$font-family: (
+  main: 'sans-serif',
+  en: "'Josefin Sans', -apple-system, blinkmacsystemfont, sans-serif"
+) !default;
+
+/// default sp fontsize. I recommend you to set this to html.
+$default-sp-font: 13px !default;
+/// default pc fontsize. I recommend you to set this to html.
+$default-pc-font: 16px !default;
+/// default line-height. I recommend you to set this to html or body.
+$default-line: 1.6 !default;
+
+/// liquid fontsize. this size will change between minFont and maxFont.
+/// @require {function} width
+/// @param {*} $minFont [$default-sp-font] - min fontsize at minDevice.
+/// @param {*} $maxFont [$default-pc-font] - max fontsize at maxDevice.
+/// @param {$content-width key} $minDevice [width(min)]
+/// @param {$content-width key} $maxDevice [width(max)]
+/// @return {calc(#{$minFont} + #{$diffFontSize} * ((100vw - #{$minDevice}) / (#{$maxDeviceNum} - #{$minDeviceNum})))}
+
+@function liquid(
+  $minFont: $default-sp-font,
+  $maxFont: $default-pc-font,
+  $minDevice: width(min),
+  $maxDevice: width(max)
+) {
+  $diffFontSize: strip-unit($maxFont - $minFont);
+  $minDeviceNum: strip-unit($minDevice);
+  $maxDeviceNum: strip-unit($maxDevice);
+
+  @return calc(#{$minFont} + #{$diffFontSize} * ((100vw - #{$minDevice}) / (#{$maxDeviceNum} - #{$minDeviceNum})));
+}
+
+/// limitLines.
+///
+/// this mixin is useful for Card component especially in CMS.
+/// @param {*} $font-size [$default-sp-font]
+/// @param {uint|float} $line-height [$default-line]
+/// @param {uint} $lines [2]
+/// @param {boolean} $max [false] - set true, It will be flexible height.
+@mixin limitLines($font-size: $default-sp-font, $line-height: $default-line, $lines: 2, $max: false) {
+  display: block; // for IE
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: $font-size;
+  line-height: $line-height;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  text-overflow: ellipsis;
+
+  @if ($max) {
+    height: auto;
+    max-height: $font-size * $lines * $line-height;
+  } @else {
+    height: $font-size * $lines * $line-height;
+    max-height: unset;
+  }
+}
+
+/// if you set $liquid to html, you can adapt flexible font-size to use em-unit.
+///
+/// But, em-unit is often complicated to communicate with designer. So this convert px-unit to em-unit.
+/// @require {variable} $default-pc-font
+/// @param {px} $px
+@mixin liquid-px($px) {
+  $rem: ($px / strip-unit($default-pc-font));
+  font-size: $rem + rem;
+  @include break('max') {
+    font-size: $px + px;
+  }
+}

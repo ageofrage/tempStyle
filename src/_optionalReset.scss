@@ -1,0 +1,12 @@
+@use './util/index.scss' as *;
+
+html {
+  font-family: var(--font-main);
+  font-size: liquid();
+  line-height: $default-line;
+  letter-spacing: 0.03em;
+}
+
+body {
+  @include liquid-px(16);
+}

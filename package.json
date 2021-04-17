@@ -1,0 +1,30 @@
+{
+  "name": "tmpStyle",
+  "version": "1.0.0",
+  "description": "temporary style-sheet",
+  "main": "index.js",
+  "repository": "git@github.com:ageofrage/tempStyle.git",
+  "author": "ageofrage",
+  "license": "MIT",
+  "scripts": {
+    "build": "sass --style=compressed --no-source-map src/index.scss:lib/index.css",
+    "watch": "sass --watch --no-source-map src/index.scss:lib/index.css",
+    "lint": "stylelint --fix lib/",
+    "test": "yarn build && yarn lint",
+    "prepare": "husky install",
+    "prepublish": "yarn test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "bourbon": "^7.0.0",
+    "husky": "^6.0.0",
+    "prettier": "^2.2.1",
+    "sass": "^1.32.8",
+    "stylelint": "^13.12.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-recess-order": "^2.3.0",
+    "stylelint-config-recommended-scss": "^4.2.0",
+    "stylelint-prettier": "^1.2.0",
+    "stylelint-scss": "^3.19.0"
+  }
+}

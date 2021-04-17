@@ -1,0 +1,23 @@
+@use './util/index.scss' as *;
+
+:root {
+  // colors
+  @each $k, $v in $colors {
+    --color-#{$k}: #{$v};
+  }
+
+  // breakpoints
+  @each $k, $v in $content-width {
+    --width-#{$k}: #{$v};
+  }
+
+  // font-families
+  @each $k, $v in $font-family {
+    --font-#{$k}: #{$v};
+  }
+
+  // content-width
+  @each $k, $v in $content-width {
+    --width-#{$k}: #{$v};
+  }
+}

@@ -1,0 +1,22 @@
+////
+/// @group shape
+////
+
+/// this will make ellipse.
+///
+/// it's useful to make buttons.
+/// @param {*} $width
+/// @param {*} $height
+@mixin ellipse($width, $height) {
+  width: $width;
+  height: $height;
+  border-radius: $height / 2;
+}
+
+/// this will make circle
+/// @param {*} $diameter
+@mixin circle($diameter) {
+  width: $diameter;
+  height: $diameter;
+  border-radius: 50%;
+}

@@ -1,0 +1,20 @@
+////
+/// @group color
+////
+
+/// colors map.
+/// to manage colors as map, you can convert it to css-vars easily.
+$colors: (
+  'deep': #000,
+  'deep2': #1d1d1d,
+  'pale': #fff,
+  'pale2': #fafafa,
+  'grey': #5e5c5d,
+  'grey2': #b4b4b4
+) !default;
+
+/// @param {$colors key} $name choice key from $colors map.
+/// @returns {$colors val} return $colors val.
+@function color($name) {
+  @return map-get($colors, $name);
+}
